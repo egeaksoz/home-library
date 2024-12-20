@@ -1,0 +1,13 @@
+{
+	"tasks": {
+		"start": "deno --allow-net server.ts",
+		"format": "deno fmt && deno lint"
+	},
+	"lint": {
+		"rules": {}
+	},
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 80
+	}
+}
