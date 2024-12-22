@@ -1,3 +1,9 @@
-Deno.serve({ port: 3000 }, (_req) => {
-	return new Response("New deno project");
-});
+import { Hono } from "@hono/hono"
+
+const app = new Hono()
+
+app.get("/", (c) => {
+	return c.text("New deno project")
+})
+
+Deno.serve(app.fetch);
