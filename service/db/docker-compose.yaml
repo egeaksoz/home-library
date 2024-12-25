@@ -1,5 +1,5 @@
 services:
   mongodb:
     image: mongodb/mongodb-community-server:latest
-    ports: 
+    ports:
       - "27017:27017"

@@ -1,6 +1,6 @@
 {
 	"tasks": {
-		"start": "deno --allow-net server.ts",
+		"start": "deno -ENRS --env server.ts",
 		"format": "deno fmt && deno lint",
 		"db:up": "docker compose -f db/docker-compose.yaml up -d",
 		"db:down": "docker compose -f db/docker-compose.yaml down"
