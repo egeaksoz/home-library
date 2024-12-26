@@ -1,14 +1,14 @@
-import { Hono } from "@hono/hono";
+import { Context, Hono } from "@hono/hono";
 import { homeLibrary } from "./db/db.ts";
 
 const app = new Hono();
-const PORT = Deno.env.get("PORT") || "3001";
+const PORT = parseInt(Deno.env.get("PORT")!) || undefined;
 
-app.get("/", (c) => {
+app.get("/", (c: Context) => {
 	return c.text("New deno project");
 });
 
-app.get("/books", async (c) => {
+app.get("/books", async (c: Context) => {
 	const books = await homeLibrary.find().toArray();
 	return c.json(books);
 });
