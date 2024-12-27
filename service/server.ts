@@ -13,4 +13,12 @@ app.get("/books", async (c: Context) => {
 	return c.json(books);
 });
 
+app.post("/books", async (c: Context) => {
+	const book = await c.req.json();
+	await homeLibrary.insertOne(book);
+	return c.body(`Successfully added "${book.title}" to your library.`, 201, {
+		"Content-Type": "text/plain",
+	});
+});
+
 Deno.serve({ port: PORT }, app.fetch);
