@@ -2,8 +2,8 @@
 	"tasks": {
 		"start": "deno -ENRS --env server.ts",
 		"format": "deno fmt && deno lint",
-		"db:up": "docker compose -f db/docker-compose.yaml up -d",
-		"db:down": "docker compose -f db/docker-compose.yaml down"
+		"db:up": "docker compose -f docker-compose_mongodb.yaml up -d",
+		"db:down": "docker compose -f docker-compose_mongodb.yaml down"
 	},
 	"lint": {
 		"rules": {}

@@ -1,8 +1,15 @@
 import { Context, Hono } from "@hono/hono";
 import { addBook, getBooks } from "./controllers/bookController.ts";
+import mongoose from "npm:mongoose@^6.7";
 
 const app = new Hono();
 const PORT = parseInt(Deno.env.get("PORT")!) || undefined;
+
+const MONGODB_URI = Deno.env.get("MONGODB_URI") || "";
+const DB_NAME = "libraries";
+
+await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`);
+console.log("MONGOOSE:", mongoose.connection.readyState);
 
 app.get("/books", async (c: Context) => {
 	return await getBooks(c);
