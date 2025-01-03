@@ -1,4 +1,4 @@
-import { model, Schema } from "npm:mongoose@^6.7";
+import { model, Schema } from "mongoose";
 
 const bookSchema = new Schema({
 	title: String,

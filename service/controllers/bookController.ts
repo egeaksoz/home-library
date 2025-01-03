@@ -1,4 +1,4 @@
-import { Context } from "@hono/hono";
+import { Context } from "hono";
 import Book from "../models/book.ts";
 
 async function getBooks(c: Context): Promise<Response> {

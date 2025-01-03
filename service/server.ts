@@ -1,6 +1,6 @@
-import { Context, Hono } from "@hono/hono";
+import { Context, Hono } from "hono";
 import { addBook, getBooks } from "./controllers/bookController.ts";
-import mongoose from "npm:mongoose@^6.7";
+import mongoose from "mongoose";
 
 const app = new Hono();
 const PORT = parseInt(Deno.env.get("PORT")!) || undefined;

@@ -1977,7 +1977,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@hono/hono@^4.6.14"
+      "jsr:@hono/hono@^4.6.14",
+      "npm:mongoose@^6.7.0"
     ]
   }
 }
