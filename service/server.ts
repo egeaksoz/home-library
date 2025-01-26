@@ -1,8 +1,11 @@
 import { Context, Hono } from "hono";
+import { logger } from "hono/logger";
 import { addBook, getBooks } from "./controllers/bookController.ts";
 import mongoose from "mongoose";
 
 const app = new Hono();
+
+app.use(logger());
 const PORT = parseInt(Deno.env.get("PORT")!) || undefined;
 
 const MONGODB_URI = Deno.env.get("MONGODB_URI") || "";
