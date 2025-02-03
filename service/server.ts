@@ -1,7 +1,7 @@
-import { Context, Hono } from "hono";
+import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { addBook, getBooks } from "./controllers/bookController.ts";
 import mongoose from "mongoose";
+import { bookRouter } from "./routes/book.router.ts";
 
 const app = new Hono();
 
@@ -14,12 +14,6 @@ const DB_NAME = "libraries";
 await mongoose.connect(`${MONGODB_URI}/${DB_NAME}`);
 console.log("MONGOOSE:", mongoose.connection.readyState);
 
-app.get("/books", async (c: Context) => {
-	return await getBooks(c);
-});
-
-app.post("/books", async (c: Context) => {
-	return await addBook(c);
-});
+app.route("/api", bookRouter);
 
 Deno.serve({ port: PORT }, app.fetch);
