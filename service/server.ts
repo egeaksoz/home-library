@@ -2,10 +2,12 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import mongoose from "mongoose";
 import { bookRouter } from "./routes/book.router.ts";
+import { secureHeaders } from "hono/secure-headers";
 
 const app = new Hono();
 
 app.use(logger());
+app.use(secureHeaders());
 const PORT = parseInt(Deno.env.get("PORT")!) || undefined;
 
 const MONGODB_URI = Deno.env.get("MONGODB_URI") || "";
