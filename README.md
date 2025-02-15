@@ -1,5 +1,11 @@
 # home-library
 
+#### Service
+
+First navigate to service directory.
+
+`cd service`
+
 ### How to start database
 
 `deno task db:up`
