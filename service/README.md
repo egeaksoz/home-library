@@ -20,6 +20,12 @@ Run:
 fastapi dev app/main.py
 ```
 
+or use uv:
+
+```
+uv run fastapi dev
+```
+
 ### Clean up
 Deactivate the virtual env
 ```
