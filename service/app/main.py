@@ -10,7 +10,19 @@ class Book(BaseModel):
     read: bool
     description: str
 
+class Library(BaseModel):
+    name: str
+    number_of_books: int
+
 app = FastAPI()
+
+@app.get("/v1/libraries")
+def get_libraries():
+    return {"libraries": "The British Library"}
+
+@app.post("/v1/libraries")
+def add_library(library: Library):
+    return library
 
 @app.get("/v1/books/{book_name}")
 def get_book(book_name: str):
