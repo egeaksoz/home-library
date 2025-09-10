@@ -18,7 +18,7 @@ app = FastAPI()
 
 @app.get("/v1/libraries")
 def get_libraries():
-    return {"libraries": "The British Library"}
+    return {"libraries": "The Ezgi Library"}
 
 @app.post("/v1/libraries")
 def add_library(library: Library):
