@@ -1,5 +1,12 @@
-from fastapi import FastAPI
+from typing import Annotated
+from collections.abc import Sequence
+
+from fastapi import Depends, FastAPI, Query
 from pydantic import BaseModel
+from sqlmodel import Session, select
+
+from app.database import create_db, get_session
+from app.models import Library
 
 class Book(BaseModel):
     title: str
@@ -10,15 +17,18 @@ class Book(BaseModel):
     read: bool
     description: str
 
-class Library(BaseModel):
-    name: str
-    number_of_books: int
-
 app = FastAPI()
+create_db()
+
+SessionDep = Annotated[Session, Depends(get_session)]
 
 @app.get("/v1/libraries")
-def get_libraries():
-    return {"libraries": "The British Library"}
+def read_libraries(
+    session: SessionDep,
+    offset: int = 0,
+    limit: int = Query(default=100, le=100)) -> Sequence[Library]:
+    libraries = session.exec(select(Library).offset(offset).limit(limit)).all()
+    return libraries
 
 @app.post("/v1/libraries")
 def add_library(library: Library):
