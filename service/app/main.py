@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 from collections.abc import Sequence
 
 from fastapi import Depends, FastAPI, Query
@@ -22,7 +22,7 @@ create_db()
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
-@app.get("/libraries")
+@app.get("/libraries", response_model=List[Library])
 def read_libraries(
     session: SessionDep,
     offset: int = 0,
