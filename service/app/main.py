@@ -1,12 +1,9 @@
-from typing import Annotated, List
-from collections.abc import Sequence
 
-from fastapi import Depends, FastAPI, Query
+from fastapi import FastAPI
 from pydantic import BaseModel
-from sqlmodel import Session, select
 
-from app.database import create_db, get_session
-from app.models import Library
+from app.database import create_db
+from app.routes.library import library_router
 
 class Book(BaseModel):
     title: str
@@ -18,21 +15,8 @@ class Book(BaseModel):
     description: str
 
 app = FastAPI()
+app.include_router(library_router)
 create_db()
-
-SessionDep = Annotated[Session, Depends(get_session)]
-
-@app.get("/libraries", response_model=List[Library])
-def read_libraries(
-    session: SessionDep,
-    offset: int = 0,
-    limit: int = Query(default=100, le=100)) -> Sequence[Library]:
-    libraries = session.exec(select(Library).offset(offset).limit(limit)).all()
-    return libraries
-
-@app.post("/libraries")
-def add_library(library: Library):
-    return library
 
 @app.get("/books/{book_name}")
 def get_book(book_name: str):
