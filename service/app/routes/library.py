@@ -1,19 +1,19 @@
 from typing import List
-from collections.abc import Sequence
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends
 from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.database import SessionDep
+from app.database import get_session
 from app.models import Library
 
 library_router = APIRouter(prefix="/libraries", tags=["libraries"])
 
 @library_router.get("/", response_model=List[Library])
-def read_libraries(session: SessionDep, offset: int = 0, limit: int = Query(default=100, le=100)) -> Sequence[Library]:
+async def read_libraries(session: AsyncSession = Depends(get_session)):
     """
     Get all libraries
     """
-    libraries = session.exec(select(Library).offset(offset).limit(limit)).all()
+    libraries = await session.exec(select(Library))
     return libraries
 
 @library_router.post("/libraries")

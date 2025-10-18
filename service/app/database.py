@@ -1,16 +1,18 @@
-from typing import Annotated
-from fastapi import Depends
-from sqlmodel import Session, SQLModel, create_engine
+from typing import AsyncGenerator
+from sqlmodel import SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/home_library"
+DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/home_library"
 
-engine = create_engine(DATABASE_URL)
+engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
-def create_db() -> None:
-    SQLModel.metadata.create_all(engine)
+async def init_db() -> None:
+    """Create the database and tables"""
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
-def get_session():
-    with Session(engine) as session:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async_session = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+    async with async_session() as session:
         yield session
-
-SessionDep = Annotated[Session, Depends(get_session)]
