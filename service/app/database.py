@@ -2,10 +2,9 @@ from typing import AsyncGenerator
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from .config import settings
 
-DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/home_library"
-
-engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+engine = create_async_engine(settings.POSTGRES_URL, echo=True, future=True)
 
 async def init_db() -> None:
     """Create the database and tables"""
