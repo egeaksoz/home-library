@@ -27,3 +27,18 @@ async def create_library(library: Library, session: AsyncSession = Depends(get_s
     await session.commit()
     await session.refresh(new_library)
     return library
+
+@library_router.put("/{library_id}", status_code=HTTPStatus.OK)
+async def update_library(library_id: int, library: Library, session: AsyncSession = Depends(get_session)):
+    """
+    Update an existing library
+    """
+    statement = select(Library).where(Library.id == library_id)
+    results = await session.exec(statement)
+    
+    updated_library = results.one()
+    updated_library.name = library.name
+    await session.commit()
+    await session.refresh(updated_library)
+
+    return updated_library
