@@ -5,6 +5,11 @@ def test_read_libraries(client: TestClient) -> None:
     response = client.get("/libraries")
     assert response.status_code == 200
 
+# TODO: "Add response check"
+def test_read_library(client: TestClient) -> None:
+    response = client.get("/libraries/1")
+    assert response.status_code == 200
+
 def test_create_library_no_body(client: TestClient) -> None:
     response = client.post("/libraries")
     assert response.status_code == 422
