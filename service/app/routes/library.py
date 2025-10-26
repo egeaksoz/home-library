@@ -51,3 +51,14 @@ async def update_library(library_id: int, library: Library, session: AsyncSessio
     await session.refresh(updated_library)
 
     return updated_library
+
+@library_router.delete("/{library_id}", status_code=HTTPStatus.NO_CONTENT)
+async def delete_library(library_id: int, session: AsyncSession = Depends(get_session)):
+    """
+    Delete library by ID
+    """
+    statement = select(Library).where(Library.id == library_id)
+    result = await session.exec(statement)
+    library = result.first()
+    await session.delete(library)
+    await session.commit()
