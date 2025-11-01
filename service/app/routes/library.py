@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Depends
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -10,7 +9,7 @@ from app.models import Library
 library_router = APIRouter(prefix="/libraries", tags=["libraries"])
 
 
-@library_router.get("/", response_model=List[Library])
+@library_router.get("/", response_model=list[Library])
 async def read_libraries(session: AsyncSession = Depends(get_session)):
     """
     Get all libraries
