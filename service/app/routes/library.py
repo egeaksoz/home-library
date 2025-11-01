@@ -9,6 +9,7 @@ from app.models import Library
 
 library_router = APIRouter(prefix="/libraries", tags=["libraries"])
 
+
 @library_router.get("/", response_model=List[Library])
 async def read_libraries(session: AsyncSession = Depends(get_session)):
     """
@@ -16,6 +17,7 @@ async def read_libraries(session: AsyncSession = Depends(get_session)):
     """
     libraries = await session.exec(select(Library))
     return libraries
+
 
 @library_router.get("/{library_id}", response_model=Library)
 async def read_library(library_id: int, session: AsyncSession = Depends(get_session)):
@@ -26,8 +28,11 @@ async def read_library(library_id: int, session: AsyncSession = Depends(get_sess
     library = await session.exec(statement)
     return library.first()
 
+
 @library_router.post("/", status_code=HTTPStatus.CREATED)
-async def create_library(library: Library, session: AsyncSession = Depends(get_session)):
+async def create_library(
+    library: Library, session: AsyncSession = Depends(get_session)
+):
     """
     Create a new library
     """
@@ -37,8 +42,11 @@ async def create_library(library: Library, session: AsyncSession = Depends(get_s
     await session.refresh(new_library)
     return library
 
+
 @library_router.put("/{library_id}", status_code=HTTPStatus.OK)
-async def update_library(library_id: int, library: Library, session: AsyncSession = Depends(get_session)):
+async def update_library(
+    library_id: int, library: Library, session: AsyncSession = Depends(get_session)
+):
     """
     Update an existing library
     """
@@ -51,6 +59,7 @@ async def update_library(library_id: int, library: Library, session: AsyncSessio
     await session.refresh(updated_library)
 
     return updated_library
+
 
 @library_router.delete("/{library_id}", status_code=HTTPStatus.NO_CONTENT)
 async def delete_library(library_id: int, session: AsyncSession = Depends(get_session)):
