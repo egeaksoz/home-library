@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from http import HTTPStatus
@@ -67,3 +67,21 @@ async def update_book(
     await session.commit()
     await session.refresh(book_to_update)
     return book_to_update
+
+
+@book_router.delete("/{book_id}", status_code=HTTPStatus.NO_CONTENT)
+async def delete_book(
+    book_id: int,
+    library_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    """
+    Delete a book from a library.
+    """
+    statement = select(Book).where(Book.id == book_id and Book.library_id == library_id)
+    book_to_delete = await session.exec(statement)
+    book_to_delete = book_to_delete.first()
+    if book_to_delete is None:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Book not found")
+    await session.delete(book_to_delete)
+    await session.commit()
