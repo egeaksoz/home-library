@@ -8,7 +8,7 @@ class Library(SQLModel, table=True):
 
 class Book(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    library_id: int | None = Field(default=None, foreign_key="library.id")
+    library_id: int = Field(foreign_key="library.id")
     title: str
     author: str
     language: str | None = None

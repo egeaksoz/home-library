@@ -5,3 +5,19 @@ from fastapi.testclient import TestClient
 def test_get_books(client: TestClient) -> None:
     response = client.get("/libraries/1/books")
     assert response.status_code == 200
+
+
+def test_post_book(client: TestClient) -> None:
+    response = client.post(
+        "/libraries/2/books",
+        headers={"Content-Type": "application/json"},
+        json={
+            "title": "Test Book",
+            "author": "Test Author",
+            "language": "Test Language",
+        },
+    )
+    assert response.status_code == 201
+    assert response.json()["title"] == "Test Book"
+    assert response.json()["author"] == "Test Author"
+    assert response.json()["language"] == "Test Language"
