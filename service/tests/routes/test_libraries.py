@@ -9,7 +9,7 @@ def test_read_libraries(client: TestClient) -> None:
 
 # TODO: "Add response check"
 def test_read_library(client: TestClient) -> None:
-    response = client.get("/libraries/1")
+    response = client.get("/libraries/2")
     assert response.status_code == 200
 
 
@@ -29,7 +29,7 @@ def test_create_library(client: TestClient) -> None:
 def test_update_library(client: TestClient) -> None:
     new_library = {"name": "new_test_library"}
     response = client.put(
-        "/libraries/1", headers={"Content-Type": "application/json"}, json=new_library
+        "/libraries/2", headers={"Content-Type": "application/json"}, json=new_library
     )
     assert response.status_code == 200
     new_library_name: str = response.json()["name"]

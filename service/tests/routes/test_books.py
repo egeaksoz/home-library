@@ -3,7 +3,12 @@ from fastapi.testclient import TestClient
 
 # TODO: "Add response check"
 def test_get_books(client: TestClient) -> None:
-    response = client.get("/libraries/1/books")
+    response = client.get("/libraries/2/books")
+    assert response.status_code == 200
+
+
+def test_get_book(client: TestClient) -> None:
+    response = client.get("/libraries/2/books/1")
     assert response.status_code == 200
 
 

@@ -9,11 +9,6 @@ from app.models import Book
 book_router = APIRouter(prefix="/libraries/{library_id}/books", tags=["books"])
 
 
-@book_router.get("/{book_name}")
-def get_book(book_name: str):
-    return {"message": f"Here is your book: {book_name}"}
-
-
 @book_router.get("/", response_model=list[Book])
 async def get_books(library_id: int, session: AsyncSession = Depends(get_session)):
     """
@@ -22,6 +17,18 @@ async def get_books(library_id: int, session: AsyncSession = Depends(get_session
     statement = select(Book).where(Book.library_id == library_id)
     books = await session.exec(statement)
     return books
+
+
+@book_router.get("/{book_id}", response_model=Book)
+async def get_book(
+    book_id: int, library_id: int, session: AsyncSession = Depends(get_session)
+):
+    """
+    Get a book by its ID.
+    """
+    statement = select(Book).where(Book.id == book_id and Book.library_id == library_id)
+    book = await session.exec(statement)
+    return book.first()
 
 
 @book_router.post("/", status_code=HTTPStatus.CREATED)
