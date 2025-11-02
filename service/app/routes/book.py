@@ -44,3 +44,26 @@ async def add_book(
     await session.commit()
     await session.refresh(new_book)
     return new_book
+
+
+@book_router.put("/{book_id}", status_code=HTTPStatus.OK)
+async def update_book(
+    book_id: int,
+    library_id: int,
+    book: Book,
+    session: AsyncSession = Depends(get_session),
+):
+    """
+    Update a book in a library.
+    """
+    statement = select(Book).where(Book.id == book_id and Book.library_id == library_id)
+    book_to_update = await session.exec(statement)
+    book_to_update = book_to_update.first()
+    if book_to_update is None:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Book not found")
+    for attr, value in book.model_dump().items():
+        if value is not None:
+            setattr(book_to_update, attr, value)
+    await session.commit()
+    await session.refresh(book_to_update)
+    return book_to_update
