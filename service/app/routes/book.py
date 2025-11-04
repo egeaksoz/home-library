@@ -10,7 +10,9 @@ book_router = APIRouter(prefix="/libraries/{library_id}/books", tags=["books"])
 
 
 @book_router.get("/", response_model=list[Book])
-async def get_books(library_id: int, session: AsyncSession = Depends(get_session)):
+async def get_books(
+    library_id: int, session: AsyncSession = Depends(get_session)
+) -> list[Book]:
     """
     Get all books in a library.
     """
@@ -22,7 +24,7 @@ async def get_books(library_id: int, session: AsyncSession = Depends(get_session
 @book_router.get("/{book_id}", response_model=Book)
 async def get_book(
     book_id: int, library_id: int, session: AsyncSession = Depends(get_session)
-):
+) -> Book:
     """
     Get a book by its ID.
     """
@@ -34,7 +36,7 @@ async def get_book(
 @book_router.post("/", status_code=HTTPStatus.CREATED)
 async def add_book(
     book: Book, library_id: int, session: AsyncSession = Depends(get_session)
-):
+) -> Book:
     """
     Add a new book to a library.
     """
@@ -52,7 +54,7 @@ async def update_book(
     library_id: int,
     book: Book,
     session: AsyncSession = Depends(get_session),
-):
+) -> Book:
     """
     Update a book in a library.
     """
@@ -74,7 +76,7 @@ async def delete_book(
     book_id: int,
     library_id: int,
     session: AsyncSession = Depends(get_session),
-):
+) -> None:
     """
     Delete a book from a library.
     """

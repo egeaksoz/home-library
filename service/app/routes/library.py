@@ -10,7 +10,7 @@ library_router = APIRouter(prefix="/libraries", tags=["libraries"])
 
 
 @library_router.get("/", response_model=list[Library])
-async def read_libraries(session: AsyncSession = Depends(get_session)):
+async def read_libraries(session: AsyncSession = Depends(get_session)) -> list[Library]:
     """
     Get all libraries
     """
@@ -31,7 +31,7 @@ async def read_library(library_id: int, session: AsyncSession = Depends(get_sess
 @library_router.post("/", status_code=HTTPStatus.CREATED)
 async def create_library(
     library: Library, session: AsyncSession = Depends(get_session)
-):
+) -> Library:
     """
     Create a new library
     """
@@ -45,7 +45,7 @@ async def create_library(
 @library_router.put("/{library_id}", status_code=HTTPStatus.OK)
 async def update_library(
     library_id: int, library: Library, session: AsyncSession = Depends(get_session)
-):
+) -> Library:
     """
     Update an existing library
     """
@@ -61,7 +61,9 @@ async def update_library(
 
 
 @library_router.delete("/{library_id}", status_code=HTTPStatus.NO_CONTENT)
-async def delete_library(library_id: int, session: AsyncSession = Depends(get_session)):
+async def delete_library(
+    library_id: int, session: AsyncSession = Depends(get_session)
+) -> None:
     """
     Delete library by ID
     """
