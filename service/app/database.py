@@ -1,7 +1,9 @@
 from collections.abc import AsyncGenerator
+
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+
 from .config import settings
 
 engine = create_async_engine(settings.POSTGRES_URL, echo=True, future=True)

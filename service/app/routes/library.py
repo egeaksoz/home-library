@@ -1,7 +1,8 @@
+from http import HTTPStatus
+
 from fastapi import APIRouter, Depends
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from http import HTTPStatus
 
 from app.database import get_session
 from app.models import Library
@@ -15,7 +16,7 @@ async def read_libraries(session: AsyncSession = Depends(get_session)) -> list[L
     Get all libraries
     """
     libraries = await session.exec(select(Library))
-    return libraries
+    return list(libraries)
 
 
 @library_router.get("/{library_id}", response_model=Library)

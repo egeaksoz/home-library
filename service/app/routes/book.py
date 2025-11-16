@@ -1,7 +1,8 @@
+from http import HTTPStatus
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from http import HTTPStatus
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.database import get_session
 from app.models import Book
@@ -18,7 +19,7 @@ async def get_books(
     """
     statement = select(Book).where(Book.library_id == library_id)
     books = await session.exec(statement)
-    return books
+    return list(books)
 
 
 @book_router.get("/{book_id}", response_model=Book)
@@ -30,7 +31,7 @@ async def get_book(
     """
     statement = select(Book).where(Book.id == book_id and Book.library_id == library_id)
     book = await session.exec(statement)
-    return book.first()
+    return book.one()
 
 
 @book_router.post("/", status_code=HTTPStatus.CREATED)
