@@ -17,6 +17,7 @@ async def get_books(
     """
     Get all books in a library.
     """
+
     statement = select(Book).where(Book.library_id == library_id)
     books = await session.exec(statement)
     return list(books)
