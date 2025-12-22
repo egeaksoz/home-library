@@ -17,10 +17,6 @@ This is a user interface for a home library management system. It allows users t
 
 `npm install`
 
-### Usage
-
-`npm start`
-
 ### Development
 
 `npm run dev`
