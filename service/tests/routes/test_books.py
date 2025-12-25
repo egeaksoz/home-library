@@ -3,22 +3,26 @@ from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
-async def test_get_books(async_client: AsyncClient) -> None:
-    response = await async_client.get("/libraries/5/books/")
+async def test_get_books(async_client: AsyncClient, request) -> None:
+    response = await async_client.get(
+        f"/libraries/{request.config.library_1_uuid}/books/"
+    )
     assert response.status_code == 200
     assert len(response.json()) == 3
 
 
 @pytest.mark.asyncio
-async def test_get_book(async_client: AsyncClient) -> None:
-    response = await async_client.get("/libraries/5/books/5")
+async def test_get_book(async_client: AsyncClient, request) -> None:
+    response = await async_client.get(
+        f"/libraries/{request.config.library_1_uuid}/books/{request.config.book_1_uuid}"
+    )
     assert response.status_code == 200
 
 
 @pytest.mark.asyncio
-async def test_post_book(async_client: AsyncClient) -> None:
+async def test_post_book(async_client: AsyncClient, request) -> None:
     response = await async_client.post(
-        "/libraries/5/books/",
+        f"/libraries/{request.config.library_1_uuid}/books/",
         headers={"Content-Type": "application/json"},
         json={
             "title": "Test Book",
@@ -33,9 +37,9 @@ async def test_post_book(async_client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_put_book(async_client: AsyncClient) -> None:
+async def test_put_book(async_client: AsyncClient, request) -> None:
     response = await async_client.put(
-        "/libraries/5/books/6",
+        f"/libraries/{request.config.library_1_uuid}/books/{request.config.book_1_uuid}",
         headers={"Content-Type": "application/json"},
         json={
             "title": "Updated Test Book",
@@ -50,12 +54,16 @@ async def test_put_book(async_client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_delete_book(async_client: AsyncClient) -> None:
-    response = await async_client.delete("/libraries/2/books/7")
+async def test_delete_book(async_client: AsyncClient, request) -> None:
+    response = await async_client.delete(
+        f"/libraries/{request.config.library_1_uuid}/books/{request.config.book_3_uuid}"
+    )
     assert response.status_code == 204
 
 
 @pytest.mark.asyncio
-async def test_delete_book_not_found(async_client: AsyncClient) -> None:
-    response = await async_client.delete("/libraries/5/books/999")
+async def test_delete_book_not_found(async_client: AsyncClient, request) -> None:
+    response = await async_client.delete(
+        f"/libraries/{request.config.library_2_uuid}/books/a713c349-1ab5-4bc1-be78-f5fa147b116f"
+    )
     assert response.status_code == 404

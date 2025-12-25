@@ -1,3 +1,4 @@
+import uuid
 from http import HTTPStatus
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -12,7 +13,7 @@ book_router = APIRouter(prefix="/libraries/{library_id}/books", tags=["books"])
 
 @book_router.get("/", response_model=list[Book])
 async def get_books(
-    library_id: int, session: AsyncSession = Depends(get_session)
+    library_id: uuid.UUID, session: AsyncSession = Depends(get_session)
 ) -> list[Book]:
     """
     Get all books in a library.
@@ -25,10 +26,12 @@ async def get_books(
 
 @book_router.get("/{book_id}", response_model=Book)
 async def get_book(
-    book_id: int, library_id: int, session: AsyncSession = Depends(get_session)
+    book_id: uuid.UUID,
+    library_id: uuid.UUID,
+    session: AsyncSession = Depends(get_session),
 ) -> Book:
     """
-    Get a book by its ID.
+    Get a book by its UUID.
     """
     statement = select(Book).where(Book.id == book_id and Book.library_id == library_id)
     book = await session.exec(statement)
@@ -37,7 +40,7 @@ async def get_book(
 
 @book_router.post("/", status_code=HTTPStatus.CREATED)
 async def add_book(
-    book: Book, library_id: int, session: AsyncSession = Depends(get_session)
+    book: Book, library_id: uuid.UUID, session: AsyncSession = Depends(get_session)
 ) -> Book:
     """
     Add a new book to a library.
@@ -52,8 +55,8 @@ async def add_book(
 
 @book_router.put("/{book_id}", status_code=HTTPStatus.OK)
 async def update_book(
-    book_id: int,
-    library_id: int,
+    book_id: uuid.UUID,
+    library_id: uuid.UUID,
     book: Book,
     session: AsyncSession = Depends(get_session),
 ) -> Book:
@@ -75,8 +78,8 @@ async def update_book(
 
 @book_router.delete("/{book_id}", status_code=HTTPStatus.NO_CONTENT)
 async def delete_book(
-    book_id: int,
-    library_id: int,
+    book_id: uuid.UUID,
+    library_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
 ) -> None:
     """

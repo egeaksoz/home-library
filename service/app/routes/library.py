@@ -1,3 +1,4 @@
+import uuid
 from http import HTTPStatus
 
 from fastapi import APIRouter, Depends
@@ -20,9 +21,11 @@ async def read_libraries(session: AsyncSession = Depends(get_session)) -> list[L
 
 
 @library_router.get("/{library_id}", response_model=Library)
-async def read_library(library_id: int, session: AsyncSession = Depends(get_session)):
+async def read_library(
+    library_id: uuid.UUID, session: AsyncSession = Depends(get_session)
+):
     """
-    Get library by ID
+    Get library by UUID
     """
     statement = select(Library).where(Library.id == library_id)
     library = await session.exec(statement)
@@ -45,7 +48,9 @@ async def create_library(
 
 @library_router.put("/{library_id}", status_code=HTTPStatus.OK)
 async def update_library(
-    library_id: int, library: Library, session: AsyncSession = Depends(get_session)
+    library_id: uuid.UUID,
+    library: Library,
+    session: AsyncSession = Depends(get_session),
 ) -> Library:
     """
     Update an existing library
@@ -63,7 +68,7 @@ async def update_library(
 
 @library_router.delete("/{library_id}", status_code=HTTPStatus.NO_CONTENT)
 async def delete_library(
-    library_id: int, session: AsyncSession = Depends(get_session)
+    library_id: uuid.UUID, session: AsyncSession = Depends(get_session)
 ) -> None:
     """
     Delete library by ID

@@ -7,7 +7,14 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.database import get_session
 from app.main import app
 
-from .utils import TestDatabase
+from .utils import (
+    BOOK_1_UUID,
+    BOOK_2_UUID,
+    BOOK_3_UUID,
+    LIBRARY_1_UUID,
+    LIBRARY_2_UUID,
+    TestDatabase,
+)
 
 TEST_DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/test"
 
@@ -53,3 +60,11 @@ async def async_client(async_db) -> AsyncClient:
     return AsyncClient(
         transport=ASGITransport(app=app), base_url="http://localhost:8000"
     )
+
+
+def pytest_configure(config):
+    config.library_1_uuid = LIBRARY_1_UUID
+    config.library_2_uuid = LIBRARY_2_UUID
+    config.book_1_uuid = BOOK_1_UUID
+    config.book_2_uuid = BOOK_2_UUID
+    config.book_3_uuid = BOOK_3_UUID

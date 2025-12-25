@@ -11,8 +11,8 @@ async def test_read_libraries(async_client: AsyncClient) -> None:
 
 # TODO: "Add response check"
 @pytest.mark.asyncio
-async def test_read_library(async_client: AsyncClient) -> None:
-    response = await async_client.get("/libraries/5")
+async def test_read_library(async_client: AsyncClient, request) -> None:
+    response = await async_client.get(f"/libraries/{request.config.library_1_uuid}")
     assert response.status_code == 200
 
 
@@ -32,10 +32,12 @@ async def test_create_library(async_client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_update_library(async_client: AsyncClient) -> None:
+async def test_update_library(async_client: AsyncClient, request) -> None:
     new_library = {"name": "new_test_library"}
     response = await async_client.put(
-        "/libraries/5", headers={"Content-Type": "application/json"}, json=new_library
+        f"/libraries/{request.config.library_1_uuid}",
+        headers={"Content-Type": "application/json"},
+        json=new_library,
     )
     assert response.status_code == 200
     new_library_name: str = response.json()["name"]
@@ -43,6 +45,6 @@ async def test_update_library(async_client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_delete_library(async_client: AsyncClient) -> None:
-    response = await async_client.delete("/libraries/6")
+async def test_delete_library(async_client: AsyncClient, request) -> None:
+    response = await async_client.delete(f"/libraries/{request.config.library_2_uuid}")
     assert response.status_code == 204
