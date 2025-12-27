@@ -6,8 +6,14 @@ const Header: FC = () => {
     <header>
       <nav>
         <ul>
-          <li>Home</li>
-          <li>Libraries</li>
+          <li>
+            <a href="/">
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="/libraries">Libraries</a>
+          </li>
         </ul>
       </nav>
     </header>
