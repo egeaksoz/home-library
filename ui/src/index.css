@@ -19,6 +19,7 @@
     min-height: 100vh;
     line-height: 1.5;
     background-color: #ddd5d5;
+    font-family: system-ui, sans-serif;
 }
 
 /* Remove list styles */
