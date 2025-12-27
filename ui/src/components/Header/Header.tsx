@@ -1,9 +1,15 @@
+import "./Header.css";
 import { type FC } from "react";
 
 const Header: FC = () => {
   return (
     <header>
-      <h1>Welcome to your library!</h1>
+      <nav>
+        <ul>
+          <li>Home</li>
+          <li>Libraries</li>
+        </ul>
+      </nav>
     </header>
   );
 };
