@@ -1,3 +1,7 @@
+:root {
+    --background-color: #ebebf6;
+}
+
 /* Box sizing rules */
 *,
 *::before,
@@ -18,7 +22,7 @@
 :where(body) {
     min-height: 100vh;
     line-height: 1.5;
-    background-color: #ebebf6;
+    background-color: var(--background-color);
     font-family: system-ui, sans-serif;
 }
 
